@@ -2,7 +2,6 @@ const {User, Balance} = require("../models/models");
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 const registrate = async userInfo => {
-    console.log(userInfo)
     if (!userInfo.password || !userInfo.email) {
         return {message: " Uncorrect email or password", code: 400}
     }

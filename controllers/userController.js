@@ -2,6 +2,9 @@ const {User} = require('../models/models')
 const generateJWT = require('../functions/generateJWT')
 const registrate = require('../services/registrate')
 const toLogin = require('../services/login')
+const NodeCache = require( "node-cache" );
+const userIdCache = new NodeCache();
+
 const registration = async(req, res) => {
     const userInfo = req.body
     const {message, code} = await registrate(userInfo)
@@ -20,7 +23,20 @@ const login = async(req, res) => {
 
 const getUsers = async (req, res) => {
     const users = await User.findAll({where : {status: true}})
-    res.status(200).json(users)
+    return res.status(200).json(users)
+}
+const getUser = async (req, res) => {
+    const id = req.params.id
+    const hasCached = userIdCache.has(id)
+    const cache = userIdCache.get(id)
+    let user;
+    if (hasCached){
+        user = cache
+    } else {
+        user = await User.findByPk(id)
+        userIdCache.set(id, user, 10000)
+    }
+    return res.status(200).json(user)
 }
 
-module.exports = {getUsers, registration, login}
+module.exports = {getUsers, getUser, registration, login}

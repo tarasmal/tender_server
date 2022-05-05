@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=guest
+      - POSTGRES_PASSWORD=guest
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+    networks:
+      cursova:
+#  backend:
+#    image: tosik_backend:1.0
+#    restart: always
+#    environment:
+#      - POSTGRES_USER=guest
+#      - POSTGRES_PASSWORD=guest
+#    ports:
+#      - '80:3000'
+#    volumes:
+#      - postgresql:/var/lib/postgresql/data
+#    networks:
+#      cursova:
+volumes:
+  postgresql:
+networks:
+  cursova:
