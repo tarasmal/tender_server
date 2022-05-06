@@ -4,12 +4,14 @@ const uuid = require('uuid')
 
 const getTenders = async (req, res) => {
     const tenders = await Tender.findAll()
+    console.log("getTenders", req.params)
     return res.status(200).json(tenders)
 }
 
-const getTender = async (req, res) => {
+const getUserTenders = async (req, res) => {
     const id = req.params.id
-    const tender = await Tender.findByPk(id)
+    console.log("getUserTenders", req.params, id)
+    const tender = await Tender.findAll({where : {userId: id}})
     if (tender){
         return res.status(200).json(tender)
     }
@@ -33,4 +35,4 @@ const createTender = async (req, res) => {
 }
 
 
-module.exports = {getTenders, getTender, createTender}
+module.exports = {getTenders, getUserTenders, createTender}
