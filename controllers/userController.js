@@ -13,7 +13,6 @@ const registration = async(req, res) => {
 }
 const login = async(req, res) => {
     const userInfo = req.body
-    console.log(userInfo)
     const user = await toLogin(userInfo)
     if (user.code) return res.status(user.code).json({message: user.message})
     const token = generateJWT(user.id, user.role)

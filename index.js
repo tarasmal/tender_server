@@ -12,6 +12,7 @@ app.use(bodyParser.json())
 //router
 const router = require('./routes/router')
 const badRequest = require("./middlewares/badRequest")
+
 app.use('/api', router)
 app.use(badRequest)
 
