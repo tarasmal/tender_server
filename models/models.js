@@ -87,25 +87,16 @@ const Tender = sequelize.define('tender', {
         allowNull: false
     },
 
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+
     location: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 
-    startDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
-
-    endDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
-
-    winnerId: {
-        type: DataTypes.UUID,
-        allowNull: true,
-    },
 
     cost: {
         type: DataTypes.DOUBLE,
@@ -121,19 +112,24 @@ const Item = sequelize.define('item', {
         type: DataTypes.UUID,
         allowNull: false,
     },
+    startDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+    },
 
-    type: {
-        type: DataTypes.STRING,
-        allowNull: false
+    endDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+    },
+
+
+    winnerId: {
+        type: DataTypes.UUID,
+        allowNull: true,
     },
 
     number: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-
-    name: {
-        type: DataTypes.STRING,
         allowNull: false,
     }
 
