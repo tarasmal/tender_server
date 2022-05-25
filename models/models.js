@@ -102,6 +102,7 @@ const Tender = sequelize.define('tender', {
         type: DataTypes.DOUBLE,
         allowNull: false
     },
+
     status: {
         type: DataTypes.BOOLEAN,
         allowNull: true
