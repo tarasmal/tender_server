@@ -14,9 +14,20 @@ const getTenders = async (req, res) => {
     else{
         tenders = await Tender.findAll({
             where:  {
-                name: {
-                    [Op.like]: '%' + searchReq + `%`
-                }
+                [Op.or]: [{
+                    name: {
+                        [Op.like]: '%' + searchReq + `%`
+                    }
+                },
+                    {
+                        location: {
+                            [Op.like]: '%' + searchReq + `%`
+                        }
+                    },
+                    {
+                        cost: searchReq
+                    }
+                ]
             }
         })
     }
