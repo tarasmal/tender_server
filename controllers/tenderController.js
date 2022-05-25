@@ -1,14 +1,28 @@
 const {Tender} = require('../models/models')
 const uuid = require('uuid')
-
+const { Op } = require("sequelize")
 const getTenders = async (req, res) => {
-    const {page} = req.query
-    const limit = 2
-    const start = limit * (page - 1)
-    const end = limit * page
-    const length = await Tender.count()
-    const tenders = await Tender.findAll({offset: limit * (page -1 ), limit})
-    return res.status(200).json({message: tenders })
+    const {page, limit, searchReq} = req.query
+    const end = page * limit
+    const start = end - limit
+    const totalCount = await Tender.count()
+    const pageCount = Math.ceil(totalCount / limit)
+    let tenders
+    if (req.headers.search === 'false'){
+        tenders = await Tender.findAll({offset: start, limit: limit})
+    }
+    else{
+        tenders = await Tender.findAll({
+            where:  {
+                name: {
+                    [Op.like]: '%' + searchReq + `%`
+                }
+            }
+        })
+    }
+
+    const data = Object.assign({}, {tenders: tenders}, {pageCount: pageCount})
+    return res.status(200).json(data)
 }
 
 const getUserTenders = async (req, res) => {
