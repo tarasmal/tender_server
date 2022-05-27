@@ -1,6 +1,7 @@
 const {Tender} = require('../models/models')
 const uuid = require('uuid')
-const {get} = require("../services/tenders/get");
+const {get, getForUser, getOneTender} = require("../services/tenders/get");
+
 const getTenders = async (req, res) => {
     const {page, limit, searchReq, status} = req.query
     const end = page * limit
@@ -13,7 +14,15 @@ const getTenders = async (req, res) => {
 
 const getUserTenders = async (req, res) => {
     const id = req.params.id
-    const tender = await Tender.findAll({where : {userId: id}})
+    const {is_one} = req.headers
+    let tender;
+    if (is_one === 'true'){
+        tender = await getOneTender(id)
+    }
+    else{
+        tender = await getForUser(id)
+    }
+
     if (tender){
         return res.status(200).json(tender)
     }

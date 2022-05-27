@@ -1,7 +1,5 @@
 const { Op} = require("sequelize")
 const {Tender} = require("../../models/models");
-
-
 const get = async (limit, searchReq, search, status, start) => {
     const searchOption = [{
         name: {
@@ -40,4 +38,25 @@ const get = async (limit, searchReq, search, status, start) => {
 
     return [totalCount, tenders]
 }
-module.exports = {get}
+
+const getForUser = async (id) => {
+    try{
+        return await Tender.findAll({where : {userId: id}})
+    }
+    catch (e){
+        console.log(e)
+        return res.status(404).json({message: "not found"})
+    }
+}
+
+const getOneTender = async (id) => {
+    try{
+        return await Tender.findOne({where: {id: id}})
+    }
+    catch (e){
+        console.log(e)
+        return res.status(404).json({message: "not found"})
+    }
+}
+
+module.exports = {get, getForUser, getOneTender}

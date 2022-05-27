@@ -8,7 +8,6 @@ const getItem = async (req, res) => {
 const createItem = async (req, res) => {
     const itemInfo = req.body
     const id = uuid.v4()
-    console.log(id, '!!!!!!!!!!!!!!!!!!!')
     const item = Object.assign({}, itemInfo, {id: id, tenderId: req.params.id})
     try {
         await Item.create(item)
