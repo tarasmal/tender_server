@@ -1,4 +1,4 @@
-const {Bid} = require('../models/models')
+const {Bid, Tender} = require('../models/models')
 const uuid = require('uuid')
 const getBids = async (req, res) => {
     const bids = await Bid.findAll()
@@ -19,9 +19,14 @@ const createBid = async(req, res) => {
 
         }
     })
-    if (checkBid){
-        return res.status(403).json({message: "BID HAS BEEN ALREADY CREATED"})
+    const tender = await Tender.findByPk(bidInfo.tenderId)
+    if (!tender.status){
+        return res.status(403).json({message: "THIS TENDER IS NOT ACTIVE"})
     }
+    if (checkBid){
+        return res.status(406).json({message: "BID HAS BEEN ALREADY CREATED"})
+    }
+
     else{
         const bid = Object.assign({}, bidInfo, {id: uuid.v4(), userId: res.locals.id})
         try {
