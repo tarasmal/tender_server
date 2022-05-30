@@ -12,16 +12,28 @@ const getBid = async(req, res) => {
 
 const createBid = async(req, res) => {
     const bidInfo = req.body
-    bidInfo.id = uuid.v4()
-    const bid = Object.assign({}, bidInfo, {id: uuid.v4(), userId: res.locals.id})
-    try {
-        await Bid.create(bid)
-        return res.status(201).json(bid)
+    const checkBid = await Bid.findOne({
+        where: {
+            userId: bidInfo.userId,
+            tenderId: bidInfo.tenderId,
+
+        }
+    })
+    if (checkBid){
+        return res.status(403).json({message: "BID HAS BEEN ALREADY CREATED"})
     }
-    catch (e){
-        console.log(e)
-        return res.status(500).json({message: "error while creating"})
+    else{
+        const bid = Object.assign({}, bidInfo, {id: uuid.v4(), userId: res.locals.id})
+        try {
+            await Bid.create(bid)
+            return res.status(201).json(bid)
+        }
+        catch (e){
+            console.log(e)
+            return res.status(500).json({message: "error while creating"})
+        }
     }
+
 
 }
 

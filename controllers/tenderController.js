@@ -33,14 +33,14 @@ const getUserTenders = async (req, res) => {
 const createTender = async (req, res) => {
     const tenderInfo = req.body
 
-    const tender = Object.assign({}, tenderInfo, {id: uuid.v4(), userId: res.locals.id})
+    const tender = Object.assign({}, tenderInfo, {id: uuid.v4(), userId: res.locals.id, status: true})
     try{
         await Tender.create(tender)
         return res.status(201).json(tender)
     }
     catch (e){
         console.log(e)
-        res.status(500).json({message: "tender has not been created"})
+        res.status(500).json(tender)
     }
 
 
