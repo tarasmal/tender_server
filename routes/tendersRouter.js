@@ -6,5 +6,6 @@ const checkCustomer = require('../middlewares/checkCustomer')
 router.get('/', tenderController.getTenders)
 router.get('/:id', tenderController.getUserTenders)
 router.put('/', checkCustomer, tenderController.createTender)
+router.post('/', tenderController.pauseTender)
 
 module.exports = router

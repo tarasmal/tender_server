@@ -43,8 +43,21 @@ const createTender = async (req, res) => {
         res.status(500).json(tender)
     }
 
+}
+const pauseTender = async (req, res) => {
+    const {id, status} = req.body
+    await Tender.update(
+        {
+            status: !status
+        },
+        {
+            where: {id: id}
+        }
+    )
+    return res.status(200).json({message: 'ok'})
 
 }
 
 
-module.exports = {getTenders, getUserTenders, createTender}
+
+module.exports = {getTenders, getUserTenders, createTender, pauseTender}
