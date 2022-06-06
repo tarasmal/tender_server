@@ -39,13 +39,17 @@ const createBid = async(req, res) => {
         }
     }
 
-
 }
-
-const deleteBid = async(req, res) => {
+const deleteBid = async (req, res) => {
     const id = req.params.id
-    Bid.destroy({where: {id: id}})
-    return res.status(200).json({message: "bid has been successfully deleted "})
+    try{
+        await Bid.destroy({where : {tenderId: id}})
+        return res.status(200)
+    }
+    catch (e) {
+        console.log(e)
+        return res.status(500)
+    }
 }
 
 module.exports = {getBids, getBid, createBid, deleteBid}

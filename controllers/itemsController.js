@@ -18,5 +18,16 @@ const createItem = async (req, res) => {
         return res.status(500).json({message: "error while creating"})
     }
 }
+const deleteItem = async (req, res) => {
+    const {tenderId} = req.params.id
+    try{
+        await Item.destroy({where: {tenderId: tenderId}})
+        return res.status(200)
+    }
+    catch (e){
+        console.log(e)
+        return res.status(500)
+    }
+}
 
-module.exports = {getItem, createItem}
+module.exports = {getItem, createItem, deleteItem}

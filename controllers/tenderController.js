@@ -1,4 +1,4 @@
-const {Tender} = require('../models/models')
+const {Tender, Bid, Item} = require('../models/models')
 const uuid = require('uuid')
 const {get, getForUser, getOneTender} = require("../services/tenders/get");
 
@@ -58,6 +58,23 @@ const pauseTender = async (req, res) => {
 
 }
 
+const deleteTender = async (req, res) => {
+    const id = req.params.id
+    try{
+        await Item.destroy({where: {tenderId: id}})
+        await Bid.destroy({where: {tenderId: id}})
+        await Tender.destroy({where: {id: id}})
+
+        return res.status(200).json({message: 'ok'})
+    }
+    catch (e){
+        console.log(e)
+        return res.status(500).json({message: 'error'})
+    }
 
 
-module.exports = {getTenders, getUserTenders, createTender, pauseTender}
+}
+
+
+
+module.exports = {getTenders, getUserTenders, createTender, pauseTender, deleteTender}
